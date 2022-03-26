@@ -1,4 +1,10 @@
-package ass01.concurrent;
+package ass01.concurrent.control;
+
+import ass01.concurrent.model.Vector2D;
+import ass01.concurrent.model.Body;
+import ass01.concurrent.model.Boundary;
+import ass01.concurrent.model.Point2D;
+import ass01.concurrent.view.SimulationView;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -49,10 +55,10 @@ public class Simulator {
 				Body b = bodies.get(i);
 
 				/* compute total force on bodies */
-				V2d totalForce = computeTotalForceOnBody(b);
+				Vector2D totalForce = computeTotalForceOnBody(b);
 
 				/* compute instant acceleration */
-				V2d acc = new V2d(totalForce).scalarMul(1.0 / b.getMass());
+				Vector2D acc = new Vector2D(totalForce).scalarMul(1.0 / b.getMass());
 
 				/* update velocity */
 				b.updateVelocity(acc, dt);
@@ -82,9 +88,9 @@ public class Simulator {
 		}
 	}
 
-	private V2d computeTotalForceOnBody(Body b) {
+	private Vector2D computeTotalForceOnBody(Body b) {
 
-		V2d totalForce = new V2d(0, 0);
+		Vector2D totalForce = new Vector2D(0, 0);
 
 		/* compute total repulsive force */
 
@@ -92,7 +98,7 @@ public class Simulator {
 			Body otherBody = bodies.get(j);
 			if (!b.equals(otherBody)) {
 				try {
-					V2d forceByOtherBody = b.computeRepulsiveForceBy(otherBody);
+					Vector2D forceByOtherBody = b.computeRepulsiveForceBy(otherBody);
 					totalForce.sum(forceByOtherBody);
 				} catch (Exception ex) {
 				}
@@ -108,16 +114,16 @@ public class Simulator {
 	private void testBodySet1_two_bodies() {
 		bounds = new Boundary(-4.0, -4.0, 4.0, 4.0);
 		bodies = new ArrayList<Body>();
-		bodies.add(new Body(0, new P2d(-0.1, 0), new V2d(0,0), 1));
-		bodies.add(new Body(1, new P2d(0.1, 0), new V2d(0,0), 2));
+		bodies.add(new Body(0, new Point2D(-0.1, 0), new Vector2D(0,0), 1));
+		bodies.add(new Body(1, new Point2D(0.1, 0), new Vector2D(0,0), 2));
 	}
 
 	private void testBodySet2_three_bodies() {
 		bounds = new Boundary(-1.0, -1.0, 1.0, 1.0);
 		bodies = new ArrayList<Body>();
-		bodies.add(new Body(0, new P2d(0, 0), new V2d(0,0), 10));
-		bodies.add(new Body(1, new P2d(0.2, 0), new V2d(0,0), 1));
-		bodies.add(new Body(2, new P2d(-0.2, 0), new V2d(0,0), 1));
+		bodies.add(new Body(0, new Point2D(0, 0), new Vector2D(0,0), 10));
+		bodies.add(new Body(1, new Point2D(0.2, 0), new Vector2D(0,0), 1));
+		bodies.add(new Body(2, new Point2D(-0.2, 0), new Vector2D(0,0), 1));
 	}
 
 	private void testBodySet3_some_bodies() {
@@ -128,7 +134,7 @@ public class Simulator {
 		for (int i = 0; i < nBodies; i++) {
 			double x = bounds.getX0()*0.25 + rand.nextDouble() * (bounds.getX1() - bounds.getX0()) * 0.25;
 			double y = bounds.getY0()*0.25 + rand.nextDouble() * (bounds.getY1() - bounds.getY0()) * 0.25;
-			Body b = new Body(i, new P2d(x, y), new V2d(0, 0), 10);
+			Body b = new Body(i, new Point2D(x, y), new Vector2D(0, 0), 10);
 			bodies.add(b);
 		}
 	}
@@ -141,7 +147,7 @@ public class Simulator {
 		for (int i = 0; i < nBodies; i++) {
 			double x = bounds.getX0()*0.25 + rand.nextDouble() * (bounds.getX1() - bounds.getX0()) * 0.25;
 			double y = bounds.getY0()*0.25 + rand.nextDouble() * (bounds.getY1() - bounds.getY0()) * 0.25;
-			Body b = new Body(i, new P2d(x, y), new V2d(0, 0), 10);
+			Body b = new Body(i, new Point2D(x, y), new Vector2D(0, 0), 10);
 			bodies.add(b);
 		}
 	}

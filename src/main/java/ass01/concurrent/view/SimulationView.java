@@ -1,4 +1,8 @@
-package ass01.concurrent;
+package ass01.concurrent.view;
+
+import ass01.concurrent.model.Body;
+import ass01.concurrent.model.Boundary;
+import ass01.concurrent.model.Point2D;
 
 import javax.swing.*;
 import java.awt.*;
@@ -109,7 +113,7 @@ public class SimulationView {
     			g2.drawRect(x0, y0 - ht, wd, ht);
     			
 	    		bodies.forEach( b -> {
-	    			P2d p = b.getPos();
+	    			Point2D p = b.getPos();
 			        int radius = (int) (10*scale);
 			        if (radius < 1) {
 			        	radius = 1;

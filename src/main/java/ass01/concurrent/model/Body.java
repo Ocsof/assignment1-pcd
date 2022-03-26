@@ -1,4 +1,4 @@
-package ass01.concurrent;
+package ass01.concurrent.model;
 
 
 /*
@@ -10,12 +10,12 @@ public class Body {
 	private static final double REPULSIVE_CONST = 0.01;
 	private static final double FRICTION_CONST = 1;
 	
-    private P2d pos;
-    private V2d vel;
+    private Point2D pos;
+    private Vector2D vel;
     private double mass;
     private int id;
     
-    public Body(int id, P2d pos, V2d vel, double mass){
+    public Body(int id, Point2D pos, Vector2D vel, double mass){
     	this.id = id;
         this.pos = pos;
         this.vel = vel;
@@ -26,11 +26,11 @@ public class Body {
     	return mass;
     }
     
-    public P2d getPos(){
+    public Point2D getPos(){
         return pos;
     }
 
-    public V2d getVel(){
+    public Vector2D getVel(){
         return vel;
     }
     
@@ -49,7 +49,7 @@ public class Body {
      * @param dt time elapsed 
      */
     public void updatePos(double dt){    	
-    	pos.sum(new V2d(vel).scalarMul(dt));
+    	pos.sum(new Vector2D(vel).scalarMul(dt));
     }
 
     /**
@@ -57,8 +57,8 @@ public class Body {
      * @param acc instant acceleration
      * @param dt time elapsed
      */
-    public void updateVelocity(V2d acc, double dt){
-    	vel.sum(new V2d(acc).scalarMul(dt));
+    public void updateVelocity(Vector2D acc, double dt){
+    	vel.sum(new Vector2D(acc).scalarMul(dt));
     }
     
     /**
@@ -91,11 +91,11 @@ public class Body {
      * @return
      * @throws InfiniteForceException
      */
-    public V2d computeRepulsiveForceBy(Body b) throws InfiniteForceException {
+    public Vector2D computeRepulsiveForceBy(Body b) throws InfiniteForceException {
 		double dist = getDistanceFrom(b);
 		if (dist > 0) {
 			try {
-				return new V2d(b.getPos(), pos)
+				return new Vector2D(b.getPos(), pos)
 					.normalize()
 					.scalarMul(b.getMass()*REPULSIVE_CONST/(dist*dist));
 			} catch (Exception ex) {
@@ -110,8 +110,8 @@ public class Body {
      * 
      * Compute current friction force, given the current velocity
      */
-    public V2d getCurrentFrictionForce() {
-        return new V2d(vel).scalarMul(-FRICTION_CONST);
+    public Vector2D getCurrentFrictionForce() {
+        return new Vector2D(vel).scalarMul(-FRICTION_CONST);
     }
     
     /**

@@ -1,15 +1,15 @@
-package ass01.concurrent;
+package ass01.concurrent.model;
 
-public class P2d {
+public class Point2D {
 
     private double x, y;
 
-    public P2d(double x,double y){
+    public Point2D(double x, double y){
         this.x = x;
         this.y = y;
     }
 
-    public P2d sum(V2d v) {
+    public Point2D sum(Vector2D v) {
     	x += v.x;
     	y += v.y;
     	return this;

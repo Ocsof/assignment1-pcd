@@ -1,4 +1,4 @@
-package ass01.concurrent;
+package ass01.concurrent.model;
 
 /**
  * Boundary of the field where bodies move. 

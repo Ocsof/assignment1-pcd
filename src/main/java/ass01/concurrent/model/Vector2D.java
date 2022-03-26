@@ -7,7 +7,7 @@
  * Use is subject to license terms.
  *
  */
-package ass01.concurrent;
+package ass01.concurrent.model;
 
 /**
  *
@@ -15,38 +15,38 @@ package ass01.concurrent;
  * objects are completely state-less
  *
  */
-public class V2d  {
+public class Vector2D {
 
     public double x,y;
 
-    public V2d(double x, double y){
+    public Vector2D(double x, double y){
         this.x = x;
         this.y = y;
     }
 
-    public V2d(V2d v){
+    public Vector2D(Vector2D v){
         this.x = v.x;
         this.y = v.y;
     }
 
-    public V2d(P2d from, P2d to){
+    public Vector2D(Point2D from, Point2D to){
         this.x = to.getX() - from.getX();
         this.y = to.getY() - from.getY();
     }
 
-    public V2d scalarMul(double k) {
+    public Vector2D scalarMul(double k) {
     	x *= k;
     	y *= k;
     	return this;
     }
     
-    public V2d sum(V2d v) {
+    public Vector2D sum(Vector2D v) {
     	x += v.x;
     	y += v.y;
     	return this;
     }
     
-    public V2d normalize() throws NullVectorException {
+    public Vector2D normalize() throws NullVectorException {
     	double mod =  Math.sqrt(x*x + y*y);
     	if (mod > 0) {
     		x /= mod;
@@ -57,7 +57,7 @@ public class V2d  {
     	}
 
     }
-    public V2d change(double x, double y) {
+    public Vector2D change(double x, double y) {
     	this.x = x;
     	this.y = y;
     	return this;

@@ -1,4 +1,4 @@
-package main.java.ass01.seq;
+package ass01.seq;
 
 import java.util.ArrayList;
 import java.util.Random;

@@ -1,4 +1,5 @@
-package main.java.ass01.seq;
+package ass01.seq;
+
 
 /**
  * Bodies simulation - legacy code: sequential, unstructured

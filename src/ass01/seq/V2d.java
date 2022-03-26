@@ -7,7 +7,7 @@
  * Use is subject to license terms.
  *
  */
-package pcd.ass01.seq;
+package ass01.seq;
 
 /**
  *

@@ -7,7 +7,7 @@
  * Use is subject to license terms.
  *
  */
-package ass01.seq;
+package main.java.ass01.seq;
 
 /**
  *

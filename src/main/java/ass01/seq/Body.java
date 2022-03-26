@@ -1,4 +1,4 @@
-package ass01.seq;
+package main.java.ass01.seq;
 
 
 /*
@@ -57,7 +57,7 @@ public class Body {
      * @param acc instant acceleration
      * @param dt time elapsed
      */
-    public void updateVelocity(V2d acc, double dt){    	
+    public void updateVelocity(V2d acc, double dt){
     	vel.sum(new V2d(acc).scalarMul(dt));
     }
     

@@ -1,6 +1,6 @@
-package ass01.seq;
+package main.java.ass01.seq;
 
-public class P2d { 
+public class P2d {
 
     private double x, y;
 

@@ -7,13 +7,13 @@ repositories {
     mavenCentral()
 }
 
-sourceSets {
-    main.java.srcDirs = ['src']
-}
-
 
 dependencies {
 
     // Use JUnit test framework
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+}
+
+test {
+    useJUnitPlatform()
 }

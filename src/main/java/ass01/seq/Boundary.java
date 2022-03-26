@@ -1,4 +1,4 @@
-package ass01.seq;
+package main.java.ass01.seq;
 
 /**
  * Boundary of the field where bodies move. 

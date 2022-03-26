@@ -1,4 +1,4 @@
-package ass01.seq;
+package ass01.concurrent;
 
 import java.util.ArrayList;
 import java.util.Random;

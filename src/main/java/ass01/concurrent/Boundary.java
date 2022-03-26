@@ -1,4 +1,4 @@
-package ass01.seq;
+package ass01.concurrent;
 
 /**
  * Boundary of the field where bodies move. 

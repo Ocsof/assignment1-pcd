@@ -1,7 +1,7 @@
 package ass01.concurrent;
 
 
-import ass01.concurrent.control.Simulator;
+import ass01.concurrent.control.Controller;
 import ass01.concurrent.view.SimulationView;
 
 /**
@@ -15,7 +15,7 @@ public class ConcurrentBodySimulationMain {
                 
     	SimulationView viewer = new SimulationView(620,620);
 
-    	Simulator sim = new Simulator(viewer);
-        sim.execute(50000);
+    	Controller sim = new Controller(viewer);
+        sim.execute(5000);
     }
 }

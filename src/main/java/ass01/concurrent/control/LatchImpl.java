@@ -1,42 +1,26 @@
 package ass01.concurrent.control;
 
-public class TaskCompletionLatch {
+public class LatchImpl implements Latch {
 
-	private int nWorkers;
-	private boolean stopped;
-	private int nCompletionsNotified;
-	
-	TaskCompletionLatch(int nWorkers){
-		this.nWorkers = nWorkers;
-		nCompletionsNotified = 0;
-		stopped = false;
+	private int nWorker;
+
+	public LatchImpl(int nWorker) {
+		this.nWorker = nWorker;
 	}
-	
-	public synchronized void reset() {
-		nCompletionsNotified = 0;	
+
+	@Override
+	public synchronized void notifyCompletion() {
+		this.nWorker--;
+		if(this.nWorker == 0){
+			notifyAll();
+		}
 	}
-	
+
+	@Override
 	public synchronized void waitCompletion() throws InterruptedException {
-		while (nCompletionsNotified < nWorkers && !stopped) {
+		while (this.nWorker > 0){
 			wait();
 		}
-		if (stopped) {
-			throw new InterruptedException();
-		}
-	}
-
-	public synchronized void notifyCompletion() {
-		nCompletionsNotified++;
-		notifyAll();
-	}
-	
-	public synchronized void stop() {
-		stopped = true;
-		notifyAll();
-	}
-	
-	public synchronized boolean stopped() {
-		return stopped;
 	}
 	
 	

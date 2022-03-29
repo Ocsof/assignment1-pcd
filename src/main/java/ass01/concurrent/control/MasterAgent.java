@@ -14,7 +14,8 @@ public class MasterAgent extends Thread{
     private final Chronometer chronometer;
 
     private final int nWorkers;
-    private final TaskCompletionLatch synchLatch;
+    private Latch synchLatch; //latch utilizzato per sincronizzare Master e Worker per l'aggiornamento della view (Master alla fine del ciclo)
+    private Barrier barrier; //barrier utilizzato per sincronizzare i worker tra di loro
 
     private long nSteps;
     private double vt; /* virtual time */
@@ -23,11 +24,10 @@ public class MasterAgent extends Thread{
     public MasterAgent(SimulationView viewer, long nSteps){
         this.viewer = viewer;
         this.nWorkers = Runtime.getRuntime().availableProcessors() + 1;
-        this.synchLatch = new TaskCompletionLatch(nWorkers);
         this.nSteps = nSteps;
         this.chronometer = new ChronometerImpl();
         /* initializing boundary and bodies */
-        this.generateBodies(1000); //100, 5000
+        this.generateBodies(5000); //100, 5000
     }
 
     public void run(){
@@ -37,62 +37,39 @@ public class MasterAgent extends Thread{
         this.chronometer.start();
         /* simulation loop */
         while (iter < this.nSteps) {
-
+            this.synchLatch = new LatchImpl(this.nWorkers);
+            this.barrier = new BarrierImpl(this.nWorkers);
             int indexFrom = 0;
             int indexTo;
             int numberOfBodies = this.bodies.size();
             int indexIncrement = numberOfBodies / this.nWorkers;
-            int thread = 1;
 
             for (int i = 0; i < this.nWorkers-1; i++){
                 indexTo = (indexFrom + indexIncrement - 1);
-                //System.out.println("Thread" + thread + " IndexFrom: " + indexFrom + "IndexTo: " + indexTo);
-                WorkerAgent worker = new WorkerAgent(this.bodies, indexFrom, indexTo, this.synchLatch);
+                WorkerAgent worker = new WorkerAgent(this.bodies, indexFrom, indexTo,
+                                                     this.bounds, this.DT, this.synchLatch, this.barrier);
                 worker.start();
                 indexFrom = indexFrom + indexIncrement;
-                thread++;
             }
-            //System.out.println("Thread" + thread + " IndexFrom: " + indexFrom + "IndexTo: " + (numberOfBodies - 1));
-            WorkerAgent worker = new WorkerAgent(this.bodies, indexFrom, (numberOfBodies - 1), this.synchLatch);
+            //TODO: da togliere e mettere dentro il for
+            WorkerAgent worker = new WorkerAgent(this.bodies, indexFrom, (numberOfBodies - 1),
+                                                 this.bounds, this.DT, this.synchLatch, this.barrier);
             worker.start();
 
-            for (int i = 0; i < this.bodies.size(); i++) { /* update bodies velocity */
-                Body body = this.bodies.get(i);
-                Vector2D totalForce = computeTotalForceOnBody(body);
-                /* compute instant acceleration */
-                Vector2D acc = new Vector2D(totalForce).scalarMul(1.0 / body.getMass());
-                body.updateVelocity(acc, this.DT); /* update velocity */
+
+            try {
+                this.synchLatch.waitCompletion();
+                this.vt = this.vt + this.DT; /* update virtual time */
+                iter++;
+                this.viewer.display(this.bodies, this.vt, iter, this.bounds); /* display current stage */
+            } catch (InterruptedException e) {
+                log("interrupted");
+                //viewer.changeState("Interrupted"); //capire come gestire sta cosa a livello view
             }
-            for (Body b : this.bodies) { /* compute bodies new pos */
-                b.updatePos(this.DT);
-            }
-            for (Body b : this.bodies) { /* check collisions with boundaries */
-                b.checkAndSolveBoundaryCollision(this.bounds);
-            }
-            this.vt = this.vt + this.DT; /* update virtual time */
-            iter++;
-            this.viewer.display(this.bodies, this.vt, iter, this.bounds); /* display current stage */
+
         }
         this.chronometer.stop();
         System.out.println("Time elapsed: " + this.chronometer.getTime() + "ms");
-    }
-
-    private Vector2D computeTotalForceOnBody(Body b) {
-        Vector2D totalForce = new Vector2D(0, 0);
-        /* compute total repulsive force */
-        for (int j = 0; j < this.bodies.size(); j++) {
-            Body otherBody = this.bodies.get(j);
-            if (!b.equals(otherBody)) {
-                try {
-                    Vector2D forceByOtherBody = b.computeRepulsiveForceBy(otherBody);
-                    totalForce.sum(forceByOtherBody);
-                } catch (Exception ex) {
-                }
-            }
-        }
-        /* add friction force */
-        totalForce.sum(b.getCurrentFrictionForce());
-        return totalForce;
     }
 
     private void generateBodies(int nBodies) {
@@ -104,6 +81,12 @@ public class MasterAgent extends Thread{
             double y = this.bounds.getY0() * 0.25 + rand.nextDouble() * (this.bounds.getY1() - this.bounds.getY0()) * 0.25;
             Body b = new Body(i, new Point2D(x, y), new Vector2D(0, 0), 10);
             this.bodies.add(b);
+        }
+    }
+
+    private void log(String msg){  //logger per eventuali stampe: da migliorare
+        synchronized(System.out){
+            System.out.println("[ master ] " + msg);
         }
     }
 }

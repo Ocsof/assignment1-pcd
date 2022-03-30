@@ -16,6 +16,6 @@ public class ConcurrentBodySimulationMain {
     	SimulationView viewer = new SimulationView(620,620);
 
     	Controller sim = new Controller(viewer);
-        sim.execute(5000);
+        sim.execute(50000);
     }
 }

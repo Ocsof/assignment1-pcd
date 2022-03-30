@@ -27,7 +27,7 @@ public class MasterAgent extends Thread{
         this.nSteps = nSteps;
         this.chronometer = new ChronometerImpl();
         /* initializing boundary and bodies */
-        this.generateBodies(5000); //100, 5000
+        this.generateBodies(100); //100, 5000
     }
 
     public void run(){

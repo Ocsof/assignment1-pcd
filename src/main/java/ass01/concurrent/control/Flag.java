@@ -1,20 +1,19 @@
 package ass01.concurrent.control;
 
+// TODO check and act?
 public class Flag {
-    int value;
-    boolean available = false;
+    boolean flag = false;
 
-    public synchronized void set(int v){
-        this.value = v;
-        available = true;
+    public synchronized void set(boolean v){
+        this.flag = v;
         notifyAll();
     }
-    public synchronized int get() {
-        while (available){
+
+    public synchronized void waitWhile(boolean v) {
+        while (this.flag == v){
             try {
                 wait();
             } catch (InterruptedException ex){}
         }
-        return value;
     }
 }

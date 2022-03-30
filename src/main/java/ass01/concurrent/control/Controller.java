@@ -16,7 +16,7 @@ public class Controller {
 	}
 	
 	public void execute(long nSteps) {
-		this.masterAgent = new MasterAgent(this.viewer, nSteps);
+		this.masterAgent = new MasterAgent(this.viewer, nSteps, this.viewer.getStopFlag());
 		this.masterAgent.start();
 	}
 

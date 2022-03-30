@@ -61,7 +61,6 @@ public class SimulationPanel extends JPanel implements KeyListener {
             });
             String time = String.format("%.2f", vt);
             g2.drawString("Bodies: " + bodies.size() + " - vt: " + time + " - nIter: " + nIter + " (UP for zoom in, DOWN for zoom out)", 2, 20);
-            g2
         }
     }
 

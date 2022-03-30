@@ -16,16 +16,18 @@ public class MasterAgent extends Thread{
     private final int nWorkers;
     private Latch synchLatch; //latch utilizzato per sincronizzare Master e Worker per l'aggiornamento della view (Master alla fine del ciclo)
     private Barrier barrier; //barrier utilizzato per sincronizzare i worker tra di loro
+    private Flag stopFlag;
 
     private long nSteps;
     private double vt; /* virtual time */
     private static final double DT = 0.001; /* virtual time step */
 
-    public MasterAgent(SimulationView viewer, long nSteps){
+    public MasterAgent(SimulationView viewer, long nSteps, Flag stopFlag){
         this.viewer = viewer;
         this.nWorkers = Runtime.getRuntime().availableProcessors() + 1;
         this.nSteps = nSteps;
         this.chronometer = new ChronometerImpl();
+        this.stopFlag = stopFlag;
         /* initializing boundary and bodies */
         this.generateBodies(100); //100, 5000
     }
@@ -61,6 +63,7 @@ public class MasterAgent extends Thread{
                 this.synchLatch.waitCompletion();
                 this.vt = this.vt + this.DT; /* update virtual time */
                 iter++;
+                this.stopFlag.waitWhile(true);
                 this.viewer.display(this.bodies, this.vt, iter, this.bounds); /* display current stage */
             } catch (InterruptedException e) {
                 log("interrupted");

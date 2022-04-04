@@ -1,8 +1,7 @@
 package ass01.concurrent;
 
 
-import ass01.concurrent.control.Controller;
-import ass01.concurrent.control.Flag;
+import ass01.concurrent.control.MasterAgent;
 import ass01.concurrent.view.SimulationView;
 
 /**
@@ -16,8 +15,9 @@ public class ConcurrentBodySimulationMain {
 
     	SimulationView viewer = new SimulationView(620,620);
 
-    	Controller sim = new Controller(viewer);
+        int nSteps = 50000;
+        int nBody = 100;
+        new MasterAgent(nSteps, nBody, viewer).start();
 
-        sim.execute(50000);
     }
 }

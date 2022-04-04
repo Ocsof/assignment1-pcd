@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class MasterAgent extends Thread{
 
-    private final SimulationView viewer;
+    private SimulationView viewer;
     private ArrayList<Body> bodies; /* bodies in the field */
     private Boundary bounds; /* boundary of the field */
     private final Chronometer chronometer;
@@ -22,15 +22,19 @@ public class MasterAgent extends Thread{
     private double vt; /* virtual time */
     private static final double DT = 0.001; /* virtual time step */
 
-    public MasterAgent(SimulationView viewer, long nSteps, Flag stopFlag){
+    public MasterAgent(long nSteps, int nBody, SimulationView viewer){
+        this(nSteps, nBody);
         this.viewer = viewer;
-        this.nWorkers = Runtime.getRuntime().availableProcessors() + 1;
-        this.nSteps = nSteps;
-        this.chronometer = new ChronometerImpl();
-        this.stopFlag = stopFlag;
-        /* initializing boundary and bodies */
-        this.generateBodies(100); //100, 5000
+        this.stopFlag = this.viewer.getStopFlag();
     }
+
+    public MasterAgent(long nSteps, int nBody){
+        this.nSteps = nSteps;
+        this.generateBodies(nBody);
+        this.chronometer = new ChronometerImpl();
+        this.nWorkers = Runtime.getRuntime().availableProcessors() + 1;
+    }
+
 
     public void run(){
         this.vt = 0; /* init virtual time */
@@ -63,8 +67,10 @@ public class MasterAgent extends Thread{
                 this.synchLatch.waitCompletion();
                 this.vt = this.vt + this.DT; /* update virtual time */
                 iter++;
-                this.stopFlag.waitWhile(true);
-                this.viewer.display(this.bodies, this.vt, iter, this.bounds); /* display current stage */
+                if(this.viewer != null) { //per differenziare caso con view e quello senza view (per il test delle performance)
+                    this.stopFlag.waitWhile(true);
+                    this.viewer.display(this.bodies, this.vt, iter, this.bounds); /* display current stage */
+                }
             } catch (InterruptedException e) {
                 log("interrupted");
                 //viewer.changeState("Interrupted"); //capire come gestire sta cosa a livello view

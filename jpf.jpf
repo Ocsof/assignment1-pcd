@@ -1,7 +1,7 @@
-target = ass01.seq.SequentialBodySimulationMain
+target = ass01.concurrent.ConcurrentBodySimulationMain
 
-classpath = build/classes/java/main/
+classpath=build/classes/java/main
 
-listener = gov.nasa.jpf.listener.PreciseRaceDetector
+listener=gov.nasa.jpf.listener.PreciseRaceDetector
 
-report.console.property_violation = error,trace
+report.console.property_violation=error,trace,snapshot

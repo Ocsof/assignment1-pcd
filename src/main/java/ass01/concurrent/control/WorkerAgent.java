@@ -38,11 +38,9 @@ public class WorkerAgent extends Thread{
         }
         try {
             this.barrier.hitAndWaitAll();
-            for (Body b : this.bodies) { /* compute bodies new pos */
-                b.updatePos(this.DT);
-            }
-            for (Body b : this.bodies) { /* check collisions with boundaries */
-                b.checkAndSolveBoundaryCollision(this.bounds);
+            for (int i = this.indexFrom; i <= this.indexTo; i++) {
+                this.bodies.get(i).updatePos(this.DT);
+                this.bodies.get(i).checkAndSolveBoundaryCollision(this.bounds);
             }
             this.synchLatch.notifyCompletion(); //notifica il master agent che ha finito
         } catch (InterruptedException e) {

@@ -75,7 +75,6 @@ public class MasterAgent extends Thread{
                 log("interrupted");
                 //viewer.changeState("Interrupted"); //capire come gestire sta cosa a livello view
             }
-
         }
         this.chronometer.stop();
         System.out.println("Time elapsed: " + this.chronometer.getTime() + "ms");

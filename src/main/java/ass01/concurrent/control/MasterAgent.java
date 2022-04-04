@@ -22,17 +22,17 @@ public class MasterAgent extends Thread{
     private double vt; /* virtual time */
     private static final double DT = 0.001; /* virtual time step */
 
-    public MasterAgent(long nSteps, int nBody, SimulationView viewer){
-        this(nSteps, nBody);
+    public MasterAgent(final long nSteps, final int nBody, final int nWorkers, final SimulationView viewer){
+        this(nSteps, nBody, nWorkers);
         this.viewer = viewer;
         this.stopFlag = this.viewer.getStopFlag();
     }
 
-    public MasterAgent(long nSteps, int nBody){
+    public MasterAgent(final long nSteps, final int nBody, final int nWorkers){
         this.nSteps = nSteps;
-        this.generateBodies(nBody);
         this.chronometer = new ChronometerImpl();
-        this.nWorkers = Runtime.getRuntime().availableProcessors() + 1;
+        this.nWorkers = nWorkers;
+        this.generateBodies(nBody);
     }
 
 

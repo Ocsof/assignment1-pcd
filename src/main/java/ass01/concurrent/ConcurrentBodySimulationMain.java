@@ -13,11 +13,13 @@ public class ConcurrentBodySimulationMain {
 
     public static void main(String[] args) {
 
-    	//SimulationView viewer = new SimulationView(620,620);
+    	SimulationView viewer = new SimulationView(620,620);
 
         int nSteps = 50000;
-        int nBody = 100;
-        //new MasterAgent(nSteps, nBody, viewer).start();
-        new MasterAgent(nSteps, nBody).start();
+        int nBody = 1000;
+        //int nWorkers = Runtime.getRuntime().availableProcessors() + 1;
+        int nWorkers = 1;
+        new MasterAgent(nSteps, nBody, nWorkers, viewer).start(); //versione con view
+        //new MasterAgent(nSteps, nBody, nWorkers).start();  //versione senza view
     }
 }

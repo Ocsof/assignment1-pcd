@@ -249,5 +249,5 @@ Termination == <>(\A self \in ProcSet: pc[self] = "Done")
 \* END TRANSLATION 
 =============================================================================
 \* Modification History
-\* Last modified Sun Apr 10 10:50:24 CEST 2022 by francescofoschini
+\* Last modified Sun Apr 10 10:36:23 CEST 2022 by francescofoschini
 \* Created Sat Apr 09 17:43:32 CEST 2022 by francescofoschini

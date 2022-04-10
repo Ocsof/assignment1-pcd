@@ -1,13 +1,11 @@
-package ass01.concurrent.control;
+package ass01.concurrent.model;
 
-import ass01.concurrent.model.Body;
-import ass01.concurrent.model.Boundary;
-import ass01.concurrent.model.Vector2D;
+import ass01.concurrent.model.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class WorkerAgent extends Thread{
-    private final ArrayList<Body> bodies; /* bodies in the field */
+    private final List<Body> bodies; /* bodies in the field */
     private final Boundary bounds; /* boundary of the field */
     private final Latch synchLatch;
     private final Barrier barrier;
@@ -15,7 +13,7 @@ public class WorkerAgent extends Thread{
     private final int indexTo;
     private final double DT; /* virtual time step */
 
-    public WorkerAgent(final ArrayList<Body> bodies, final int indexFrom, final int indexTo,
+    public WorkerAgent(final List<Body> bodies, final int indexFrom, final int indexTo,
                        final Boundary bounds, final double DT,
                        final Latch synchLatch, final Barrier barrier) {
         this.bodies = bodies;

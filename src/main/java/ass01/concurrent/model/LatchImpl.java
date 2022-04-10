@@ -1,4 +1,6 @@
-package ass01.concurrent.control;
+package ass01.concurrent.model;
+
+import ass01.concurrent.model.Latch;
 
 public class LatchImpl implements Latch {
 

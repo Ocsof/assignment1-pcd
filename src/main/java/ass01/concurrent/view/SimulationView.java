@@ -1,17 +1,10 @@
 package ass01.concurrent.view;
 
-import ass01.concurrent.control.Flag;
+import ass01.concurrent.model.Flag;
 import ass01.concurrent.model.Body;
 import ass01.concurrent.model.Boundary;
-import ass01.concurrent.model.Point2D;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Simulation view
@@ -35,7 +28,7 @@ public class SimulationView {
         this.frame = new SimulationFrame(width,height,this.stopFlag);
     }
         
-    public void display(final ArrayList<Body> bodies, final double vt, final long iter, final Boundary bounds){
+    public void display(final List<Body> bodies, final double vt, final long iter, final Boundary bounds){
  	   this.frame.display(bodies, vt, iter, bounds);
     }
 

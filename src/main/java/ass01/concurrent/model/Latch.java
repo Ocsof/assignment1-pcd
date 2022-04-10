@@ -1,4 +1,4 @@
-package ass01.concurrent.control;
+package ass01.concurrent.model;
 
 public interface Latch {
     void notifyCompletion();

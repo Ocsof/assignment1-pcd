@@ -4,6 +4,7 @@ import ass01.concurrent.model.Body;
 import ass01.concurrent.model.Boundary;
 import ass01.concurrent.model.Point2D;
 
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 
 public class SimulationPanel extends JPanel implements KeyListener {
 
-    private ArrayList<Body> bodies;
+    private List<Body> bodies;
     private Boundary bounds;
 
     private long nIter;
@@ -72,7 +73,7 @@ public class SimulationPanel extends JPanel implements KeyListener {
         return (int)(dy - y*dy*scale);
     }
 
-    public void display(ArrayList<Body> bodies, double vt, long iter, Boundary bounds){
+    public void display(List<Body> bodies, double vt, long iter, Boundary bounds){
         this.bodies = bodies;
         this.bounds = bounds;
         this.vt = vt;

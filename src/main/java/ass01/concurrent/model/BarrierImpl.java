@@ -1,6 +1,8 @@
-package ass01.concurrent.control;
+package ass01.concurrent.model;
 
-public class BarrierImpl implements Barrier{
+import ass01.concurrent.model.Barrier;
+
+public class BarrierImpl implements Barrier {
 
     private final int nPartecipants;
     private int nHits;

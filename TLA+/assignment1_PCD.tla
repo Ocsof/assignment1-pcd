@@ -16,13 +16,14 @@ variable
     latch = NUMBER_OF_WORKERS;
 
 define
-    WorkerIterationGEIterationInvariant == (\A n \in 1..NUMBER_OF_WORKERS: workerIteration[n] >= iteration)
-    IterationInvariant == (iteration <= STEPS)
+    WorkerIterationInSynchWithMaster == (\A n \in 1..NUMBER_OF_WORKERS: workerIteration[n] >= iteration)
+    NumSteps == (iteration <= STEPS)
     PositionUpdatedAfterVelocity == []( (\A n \in 1..NUMBER_OF_WORKERS: positions[n] = 1) => (\A n \in 1..NUMBER_OF_WORKERS: velocities[n] = 1) )
-    PositionComputation ==  (iteration < STEPS) => <>(\A n \in 1..NUMBER_OF_WORKERS: positions[n] = 1)
+    VelocityComputedEachStep ==  (iteration < STEPS) => <>(\A n \in 1..NUMBER_OF_WORKERS: velocities[n] = 1)
+    PositionComputedEachStep ==  (iteration < STEPS) => <>(\A n \in 1..NUMBER_OF_WORKERS: positions[n] = 1)
+    LatchTerminationEachStep == (iteration < STEPS) => <>(latch = 0)
+    BarrierTerminationEachStep == (iteration < STEPS) => <>(barrier = 0)
     SimTermination == <>(iteration = STEPS)
-    LatchTermination == <>(latch = 0)
-    BarrierTermination == <>(barrier = 0)
 end define;
 
 macro startLatch(latch) begin
@@ -105,18 +106,19 @@ begin
 end process;
 
 end algorithm;*)
-\* BEGIN TRANSLATION (chksum(pcal) = "e1f9b940" /\ chksum(tla) = "ef029407")
+\* BEGIN TRANSLATION (chksum(pcal) = "b29c1995" /\ chksum(tla) = "e0a22bbd")
 VARIABLES iteration, workerIteration, velocities, positions, creation, 
           barrier, latch, pc
 
 (* define statement *)
-WorkerIterationGEIterationInvariant == (\A n \in 1..NUMBER_OF_WORKERS: workerIteration[n] >= iteration)
-IterationInvariant == (iteration <= STEPS)
+WorkerIterationInSynchWithMaster == (\A n \in 1..NUMBER_OF_WORKERS: workerIteration[n] >= iteration)
+NumSteps == (iteration <= STEPS)
 PositionUpdatedAfterVelocity == []( (\A n \in 1..NUMBER_OF_WORKERS: positions[n] = 1) => (\A n \in 1..NUMBER_OF_WORKERS: velocities[n] = 1) )
-PositionComputation ==  (iteration < STEPS) => <>(\A n \in 1..NUMBER_OF_WORKERS: positions[n] = 1)
+VelocityComputedEachStep ==  (iteration < STEPS) => <>(\A n \in 1..NUMBER_OF_WORKERS: velocities[n] = 1)
+PositionComputedEachStep ==  (iteration < STEPS) => <>(\A n \in 1..NUMBER_OF_WORKERS: positions[n] = 1)
+LatchTerminationEachStep == (iteration < STEPS) => <>(latch = 0)
+BarrierTerminationEachStep == (iteration < STEPS) => <>(barrier = 0)
 SimTermination == <>(iteration = STEPS)
-LatchTermination == <>(latch = 0)
-BarrierTermination == <>(barrier = 0)
 
 
 vars == << iteration, workerIteration, velocities, positions, creation, 
@@ -249,5 +251,6 @@ Termination == <>(\A self \in ProcSet: pc[self] = "Done")
 \* END TRANSLATION 
 =============================================================================
 \* Modification History
-\* Last modified Sun Apr 10 10:50:24 CEST 2022 by francescofoschini
+\* Last modified Sun Apr 10 11:57:55 CEST 2022 by francescofoschini
+\* Last modified Sun Apr 10 11:13:57 CEST 2022 by Davide
 \* Created Sat Apr 09 17:43:32 CEST 2022 by francescofoschini

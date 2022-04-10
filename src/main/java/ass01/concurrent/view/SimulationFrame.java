@@ -1,16 +1,16 @@
 package ass01.concurrent.view;
 
-import ass01.concurrent.control.Flag;
+import ass01.concurrent.model.Flag;
 import ass01.concurrent.model.Body;
 import ass01.concurrent.model.Boundary;
 
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 
 public class SimulationFrame extends JFrame implements ActionListener {
     private SimulationPanel panel;
@@ -47,7 +47,7 @@ public class SimulationFrame extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
-    public void display(ArrayList<Body> bodies, double vt, long iter, Boundary bounds){
+    public void display(List<Body> bodies, double vt, long iter, Boundary bounds){
         try {
             SwingUtilities.invokeLater(() -> {  //todo è ok oppure andava lasciato invokeAndWait??
                 panel.display(bodies, vt, iter, bounds);

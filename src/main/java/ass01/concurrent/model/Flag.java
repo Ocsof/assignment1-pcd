@@ -1,4 +1,4 @@
-package ass01.concurrent.control;
+package ass01.concurrent.model;
 
 // TODO check and act?
 public class Flag {

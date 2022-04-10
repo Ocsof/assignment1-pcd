@@ -29,7 +29,7 @@ public abstract class AbstractSimulator extends Thread{
 
     protected void log(String msg){  //logger per eventuali stampe
         synchronized(System.out){
-            System.out.println("[ master ] " + msg);
+            System.out.println("[" + this.getName() + "] " + msg);
         }
     }
 
@@ -38,7 +38,6 @@ public abstract class AbstractSimulator extends Thread{
     }
 
     private void generateGameObject(final int numBodies) {
-        System.out.println(numBodies);
         this.bounds = new Boundary(-6.0, -6.0, 6.0, 6.0); //perimetro di gioco
         Random rand = new Random(System.currentTimeMillis());
         this.bodies = new ArrayList<>();

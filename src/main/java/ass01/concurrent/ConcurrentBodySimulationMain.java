@@ -19,13 +19,13 @@ public class ConcurrentBodySimulationMain {
     	SimulationView viewer = new SimulationView(620,620);
 
         int nSteps = 10000;
-        int nBody = 2000;
+        int nBody = 1000;
         int nWorkers = Runtime.getRuntime().availableProcessors() + 1;
         //int nWorkers = 9;
         Chronometer chrono = new ChronometerImpl();
-        chrono.start();
         MasterAgentWithGui master = new MasterAgentWithGui(nSteps, nBody, nWorkers, viewer); //versione con view
         //MasterAgent master = new MasterAgent(nSteps, nBody, nWorkers);  //versione senza view
+        chrono.start();
         master.start();
         try {
             master.join();
@@ -34,6 +34,5 @@ public class ConcurrentBodySimulationMain {
         }
         chrono.stop();
         System.out.println("Time elapsed: " + chrono.getTime() + "ms");
-        //new MasterAgent(nSteps, nBody, nWorkers).start();  //versione senza view
     }
 }

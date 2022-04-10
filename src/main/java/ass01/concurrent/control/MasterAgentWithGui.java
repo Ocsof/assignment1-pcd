@@ -13,27 +13,14 @@ public class MasterAgentWithGui extends AbstractMasterAgent{
         super(numBodies, nSteps, nWorkers);
         this.viewer = viewer;
         this.stopFlag = this.viewer.getStopFlag();
+        this.vt = 0; /* init virtual time */
     }
 
+
     @Override
-    public void run() {
-        this.vt = 0; /* init virtual time */
-        long iter = 0;
-        /* simulation loop */
-        while (iter < this.getnSteps()) {
-            this.createLatch();
-            this.createBarrier();
-            this.createAndStartWorkers();
-            try {
-                this.getLatch().waitCompletion();
-                this.vt = this.vt + this.getDT(); /* update virtual time */
-                iter++;
-                this.stopFlag.waitWhile(true);
-                this.viewer.display(this.getBodies(), this.vt, iter, this.getBounds()); /* display current stage */
-            } catch (InterruptedException e) {
-                log("interrupted");
-                //viewer.changeState("Interrupted"); //capire come gestire sta cosa a livello view
-            }
-        }
+    protected void manageGUI(final int iter) {
+        this.vt = this.vt + this.getDT(); /* update virtual time */
+        this.stopFlag.waitWhile(true);
+        this.viewer.display(this.getBodies(), this.vt, iter, this.getBounds()); /* display current stage */
     }
 }

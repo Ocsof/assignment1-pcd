@@ -2,7 +2,7 @@ package ass01.concurrent.control;
 
 import ass01.concurrent.model.*;
 
-public class AbstractMasterAgent extends AbstractSimulator{
+public abstract class AbstractMasterAgent extends AbstractSimulator{
 
     private final int nWorkers;
     private Latch synchLatch; //latch utilizzato per sincronizzare Master e Worker per l'aggiornamento della view (Master alla fine del ciclo)
@@ -12,6 +12,25 @@ public class AbstractMasterAgent extends AbstractSimulator{
     public AbstractMasterAgent(final int numBodies, final int nSteps, final int nWorkers) {
         super(numBodies, nSteps);
         this.nWorkers = nWorkers;
+    }
+
+    @Override
+    public void run() {
+        int iter = 0;
+        /* simulation loop */
+        while (iter < this.getnSteps()) {
+            this.createLatch();
+            this.createBarrier();
+            this.createAndStartWorkers();
+            try {
+                this.getLatch().waitCompletion();
+                iter++;
+                this.manageGUI(iter);
+            } catch (InterruptedException e) {
+                log("interrupted");
+                //viewer.changeState("Interrupted"); //capire come gestire sta cosa a livello view
+            }
+        }
     }
 
     protected void createAndStartWorkers(){
@@ -32,6 +51,8 @@ public class AbstractMasterAgent extends AbstractSimulator{
                 this.getBounds(), this.DT, this.synchLatch, this.barrier);
         worker.start();
     }
+
+    protected abstract void manageGUI(final int iter);  //templateMethod
 
     protected void createLatch(){
         this.synchLatch = new LatchImpl(this.nWorkers);
